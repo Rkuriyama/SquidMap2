@@ -139,7 +139,7 @@ $(function(){
                     console.log(value);
                     socket.emit('c2s_broadcast', {
                         act: 'change_map',
-                        src: 'img/map/'+value
+                        src: value
                     });
                 });
 
