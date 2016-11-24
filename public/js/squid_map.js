@@ -135,11 +135,11 @@ $(function(){
 
                 $('#map_select_menu').change(function(event) {
                     var value = map_src_list[$(this).val()];
-                    $('#view').css('background-image', 'url("img/map/'+value+'")');
+                    $('#view').css('background-image', 'url("/img/map/'+value+'")').data('mapnum',$(this).val());
                     console.log(value);
                     socket.emit('c2s_broadcast', {
                         act: 'change_map',
-                        src: value
+                        src: $(this).val()
                     });
                 });
 
@@ -307,14 +307,15 @@ $(function(){
                             layer_length++;
                             if(data.layer == layer_length){
                                  $('#addlayer').before('<tr id="layer'+layer_length+'" class="layer layer_s" data-layer="'+layer_length+'"><td>layer'+layer_length+'</td><td class="see" data-view="true">○</td></tr>');
-                                 $('#view').append('<canvas id="draw_area'+layer_length+'" width="800" height="600"></canvas>');
+                                 $('#view canvas').last().after('<canvas id="draw_area'+layer_length+'" width="800" height="600"></canvas>');
                                  canvases[layer_length] = document.getElementById('draw_area'+layer_length+'');
                                  ctxs[layer_length] = canvases[layer_length].getContext('2d');
                             }
                             break;
                        case "delete_layer":
+                             if (data.layer == layer_length) {layer_length--;};
                              $('#draw_area' + data.layer ).remove(); 
-                             $$('#layer'+ data.layer).remove();
+                             $('#layer'+ data.layer).remove();
                        break;
 
                        case "change_layer_opacity":
@@ -333,7 +334,9 @@ $(function(){
                             break;
 
                         case "change_map":
-                            $('#view').css('background-image', 'url("img/map/'+data.src+'")');
+                            $('#map_select_menu').val(data.src);
+                            var src = map_src_list[data.src];
+                            $('#view').css('background-image', 'url("/img/map/'+src+'")').data('mapnum',data.src);
                         break;
                     }
                 });
@@ -359,7 +362,7 @@ $(function(){
                             var result = $('#layer_list').sortable('toArray');
                             $.each(result, function(index, val) {
                                 var num = $('#'+val).data('layer');
-                                $('#draw_area'+num).appendTo('#view');
+                                $('canvas').last().after($('#draw_area'+num));
                             });
                             socket.emit('c2s_broadcast',{
                                 act:'sort_layer',
@@ -391,7 +394,7 @@ $(function(){
                     event.preventDefault();
                     layer_length++;
                     $(this).before('<tr id="layer'+layer_length+'" class="layer layer_s" data-layer="'+layer_length+'"><td>layer'+layer_length+'</td><td class="see" data-view="true">○</td></tr>');
-                    $('#view').append('<canvas id="draw_area'+layer_length+'" width="800" height="600"></canvas>');
+                    $('canvas').last().after('<canvas id="draw_area'+layer_length+'" width="800" height="600"></canvas>');
                     canvases[layer_length] = document.getElementById('draw_area'+layer_length+'');
                     ctxs[layer_length] = canvases[layer_length].getContext('2d');
 
@@ -402,12 +405,16 @@ $(function(){
                 });
                 $('#deletelayer').on('click',function(event){
                     event.preventDefault();
-                    if($('.layer.on').data('layer') != 0 ){
-                        canvases[$('.layer.on').data('layer')] = null;
-                        $('#draw_area' + $('.layer.on').data('layer') ).remove(); 
+                    var now_canvas = $('.layer.on').data('layer')
+                    if(now_canvas != 0 ){
+                        if(now_canvas == layer_length){
+                            layer_length--;
+                        }
+                        canvases[now_canvas] = null;
+                        $('#draw_area' + now_canvas ).remove(); 
                         $('.layer.on').remove();
                         socket.emit('c2s_broadcast',{
-                            act: "add_layer",
+                            act: "delete_layer",
                             layer:now_canvas
                         });
                     }else{
@@ -432,7 +439,7 @@ $(function(){
                         ],
                         weapons:[
                         ],
-                        map:$('#view').css('background-image')
+                        map:$('#view').data('mapnum')
                     }
                     $('.layer').each(function(index, el) {
                         var num = $(el).data('layer');
@@ -460,20 +467,22 @@ $(function(){
 
 
                 socket.on('canvas_data', function(data){
-                    var map_src = data.map;
-                    console.log(map_src);
                     /////mapを読み込む
-                    $('#view').css('background-image', map_src);
+                            $('#map_select_menu').val(data.map);
+                    var map_src = map_src_list[data.map];
+                    $('#view').css('background-image', 'url("/img/map/'+map_src+'")').data('mapnum',data.map);
                     /////レイヤーリスト&キャンバスの作成.
+                    var max_layer_length = 0;
                     $.each(data.list, function(index, val) {
-                        layer_length++;
                         if (val != 0) {
+                            if (max_layer_length <= val) {max_layer_length = val;};
                             $('#addlayer').before('<tr id="layer'+val+'" class="layer layer_s" data-layer="'+val+'"><td>layer'+val+'</td><td class="see" data-view="true">○</td></tr>');
-                            $('#view').append('<canvas id="draw_area'+val+'" width="800" height="600"></canvas>');
+                            $('canvas').last().after('<canvas id="draw_area'+val+'" width="800" height="600"></canvas>');
                         };
                         canvases[val] = document.getElementById('draw_area'+val+'');
                         ctxs[val] = canvases[val].getContext('2d');
                     });
+                    layer_length = max_layer_length;
                     /////canvasnのロード
                     $.each(data.canvases,function(index, val) {
                         var image = new Image();
