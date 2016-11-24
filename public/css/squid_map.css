@@ -72,7 +72,7 @@
             left:210px;
             width: 800px;
             height: 600px;
-            background-image: url('img/map/hakohugu.png');
+            background-image: url('/img/map/hakohugu.png');
             background-size: contain;
             background-repeat: no-repeat;
             box-sizing:border-box;
@@ -82,7 +82,7 @@
 
 
 			canvas {
-				cursor:url('img/ico/pen32.png') 16 16 , auto;
+				cursor:url('/img/ico/pen32.png') 16 16 , auto;
 				position:absolute;
         top:0;
         left: 0;
