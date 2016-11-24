@@ -1,0 +1,30 @@
+<!DOCTYPE html5>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>Untitled Document</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript" src="/js/jquery.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.chromeContext_myarrange.js"></script>
+        <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/squid_map.js"></script>
+    </head>
+	<body>
+		<h1>部屋一覧</h1>
+		<hr>
+		<!-- <> -->
+		<hr>
+		<h2>新しく部屋を作る</h2>
+			<form class="form-inline">
+				<label class="nameLabel" for="room">Room Name:</label>
+				<input type="text" class="form-control" id="room">
+				<label class="nameLabel" for="pass">PassWord:</label>
+				<input type="text" class="form-control" id="pass">
+				<label class="nameLabel" for="name">Your Name:</label>
+				<input type="text" class="form-control" id="name">
+
+				<button type="submit" class="btn btn-primary" id="sendButton">作成</button>
+			</form>
+	</body>
+
+</html>

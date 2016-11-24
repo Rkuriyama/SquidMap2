@@ -18,11 +18,12 @@
     "method-override": "^2.3.6",
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
+    "node-validator": "^0.1.25",
     "serve-favicon": "^2.3.0",
     "socket.io": "^1.5.0"
   },
   "engines": {
-	"node":"v4.4.X",
-	"npm":"v2.15.0"
+    "node": "v4.4.X",
+    "npm": "v2.15.0"
   }
 }

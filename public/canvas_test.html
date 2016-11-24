@@ -4,11 +4,10 @@
         <meta charset="utf-8">
         <title>SquidMap</title>
         <script src="/socket.io/socket.io.js"></script>
-        <script type="text/javascript" src="/js/jquery.min.js"></script>
-        <script type="text/javascript" src="/js/jquery.chromeContext_myarrange.js"></script>
-        <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-        <link rel="shortcut icon" href="/img/ico/favicon.ico" >
- 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.chromeContext_myarrange.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script type="text/javascript">
     $(function(){
         var dialog1 = $('#dialog-form1').dialog({
@@ -42,44 +41,86 @@
           });
     });
         </script>
-        <link rel="stylesheet" type="text/css" href="/css/index.css">
+      <style type="text/css">
+
+        body {
+          padding: 0 0;
+          margin: 0 0;
+        }
+        #header {
+          position: fixed;
+          width: 100%;
+          height: 45px;
+          margin: 0 0;
+          z-index: 99;
+          background-color: rgb(100,200,200);
+        }
+          #header > p {
+          cursor: pointer;
+            padding-left:10px;
+            color: white;
+            font-size: 2em;
+            width: 150px;
+            margin: 0;
+          }
+
+#main{
+  position: relative;
+  top: 45px;
+  width: 1220;
+  height: 1005;
+  margin:0 auto;
+  padding-left: 10px;
+}
+  #main p {
+  }
+  #main .frame {
+      position: absolute;
+      top: 50px;
+      left:500px;
+      box-shadow: 0px 0px 20px -5px rgba(0, 0, 0, 0.8);
+  }
+    .frame img{
+      width: 700px;
+      border-radius: 5px;
+    }
+      label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    p.attention {
+      font-size: 0.5em;
+      padding: 0;
+      margin: 0;
+      color: gray;
+    }
+  </style>
 
     <body>
 
       <div id="header" class="effect1">
-        <a href="/" style="text-decoration:none;color:white;"><p>SquidMap</p></a>
-        <ul id="header_menu">
-        	<li><a href="/howto">使い方</a></li><!-- 
-        	 --><li><a href="/bugs">既知のバグ</a></li><!-- 
-        	 --><li><a href="/update">更新情報・予定</a></li>
-        </ul>
+        <p>SquidMap</p>
       </div>
       <div id="main">
-            <!-- <h1 style="padding-top:50px;">SquidMap</h1> -->
-            <img src="img/ico/logo.jpg" width="400">
+            <h1 style="padding-top:50px;">SquidMap</h1>
                 <h2>Splatoon<br>リアルタイム作戦ボード</h2>
 
 
                 <p>好きなMapにお絵描きしながら<br>ブキを置いてポジションを決めて<br>作戦を立てよう。</p>
 
                 <p class="attention">※Wii U及びスプラトゥーンは、任天堂株式会社の商標であり、<br>当サイトは任天堂株式会社とは一切関係のないサービスです。</p>
-                <p class="attention" >※本サイトで使用させていただいたマップの画像は全て<a href="http://balkan3.blog.fc2.com/blog-entry-2.html"  target="_blank">カンZYさんが作成された自作マップ</a>です。</p>
-                <p class="attention" style="margin-bottom:30px;">※本サイトのロゴに使用させていただいたフォント<a href="http://frozenpandaman.github.io/inkling.html" target="_blank">INKLINGは　eli fessler さんが作成されたもの</a>です。<br><br>
-
-                	バグ報告は必ず"<a href="/bugs">既知のバグ</a>"ページをご確認後、<br>ご要望は<a href="/update">更新情報・予定</a>をご確認後に<a href="https://twitter.com/squid_map" target="_blank">@squid_map</a>までご連絡ください。</p>
-          <button id="create-new-room">Create a new room</button>
+                <p class="attention" style="margin-bottom:50px;">※本ページで掲載しているマップの画像は全て<a href="http://balkan3.blog.fc2.com/blog-entry-2.html">カンZYさんが作成された自作マップ</a>です。</p>
+          <button id="create-new-room">Create new room</button>
           <button id="join-room">Join a room</button>
-
           <div class="frame"><img src="img/top-image.png"></div>
           <div id="dialog-form1" title="Create new room">
             <form method="POST" class="form-inline" action="create_room">
               <fieldset>
                 <label class="nameLabel" for="room">Room Name:</label>
-                <input type="text" required class="form-control" id="room" name='room'><br>
+                <input type="text" class="form-control" id="room" name='room' pattern="^[0-9A-Za-z]+$"><br>
                 <label class="nameLabel" for="pass">Password:</label>
-                <input type="password" required class="form-control" id="pass" name='pass'><br>
+                <input type="password" class="form-control" id="pass" name='pass' pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,}"><br>
                 <label class="nameLabel" for="name">Your Name:</label>
-                <input type="text" required class="form-control" id="name" name='name'><br>
+                <input type="text" class="form-control" id="name" name='name'><br>
 
                 <button type="submit" class="btn btn-primary" id="sendButton">Create</button>
               </fieldset>
@@ -89,17 +130,14 @@
           <div id="dialog-form2" title="Join a room">
             <form method="POST" class="form-inline" action="do_join">
               <label class="nameLabel" for="room" >Room Name:</label>
-              <input type="text" required class="form-control" id="room" name='room'><br>
+              <input type="text" class="form-control" id="room" name='room' pattern="^[0-9A-Za-z]+$"><br>
               <label class="nameLabel" for="pass">Password:</label>
-                <input type="password" required class="form-control" id="pass" name="pass"><br>
+                <input type="password" class="form-control" id="pass" name="pass"><br>
                 <label class="nameLabel" for="name">Your Name:</label>
-                <input type="text" required class="form-control" id="name" name="name"><br>
+                <input type="text" class="form-control" id="name" name="name"><br>
               <button type="submit">join</button>
             </form>
           </div>
-          <% if(err_message){%>
-          	<p id="err_message"><%= err_message%></p>
-          <%}%>
 </div>
 
     </body>
