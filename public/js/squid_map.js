@@ -242,6 +242,7 @@ $(function(){
                             // console.log("d_remote: " + data.x, data.y);
                     // console.log(ctxs);
                             remote_draw = true;
+                            ctxs[data.layer].save();
                             ctxs[data.layer].lineWidth = data.lineWidth;
                             ctxs[data.layer].strokeStyle = data.color;
                             ctxs[data.layer].globalCompositeOperation = data.gCO;
@@ -262,6 +263,9 @@ $(function(){
                             ctxs[data.layer].stroke();
                             ctxs[data.layer].closePath();
                             remote_draw = false;
+                            ctxs[data.layer].restore();
+
+
                             break;
 
                         case 'add_w':
