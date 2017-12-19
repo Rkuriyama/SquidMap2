@@ -2,12 +2,10 @@
 
 var express = require('express');
 var http = require('http');
-// var routes = require('./routes');
-// var user = require('./routes/user');
 var path = require('path');
 var fs = require('fs');
 
-
+var basicAuth = require('basic-auth-connect');
 
 var methodOverride = require('method-override');
 var session = require('express-session');
@@ -30,6 +28,7 @@ var app = express();
 	  resave: false,
 	  saveUninitialized: false
 	}));
+	app.use(basicAuth('squid','1220'));
 	app.use(express.static(path.join(__dirname, 'public')));
 
 	// app.get('/', routes.index);
