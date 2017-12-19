@@ -3,6 +3,9 @@
     <head>
         <meta charset="utf-8">
         <title>SquidMap</title>
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="viewport" content="width=device-width; initial-scale=1.0" />
         <script src="/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript" src="/js/jquery.chromeContext_myarrange.js"></script>
@@ -57,19 +60,23 @@
       <div id="main">
             <!-- <h1 style="padding-top:50px;">SquidMap</h1> -->
             <img src="img/ico/logo.jpg" width="400">
-                <h2>Splatoon<br>リアルタイムオンライン作戦ボード</h2>
+                <h2>Splatoon<br>オンライン作戦ボード</h2>
 
 
-                <p>好きなMapにお絵描きしながら<br>ブキを置いてポジションを決めて<br>作戦を立てよう。</p>
+                <p>Splatoonをもっと深く、もっと楽しく。</p>
+                <button id="create-new-room">Create</button>
+                <button id="join-room">Join</button>
+          <% if(err_message){%>
+            <p id="err_message"><%= err_message%></p>
+          <%}%>
 
-                <p class="attention">※Wii U及びスプラトゥーンは、任天堂株式会社の商標であり、<br>当サイトは任天堂株式会社とは一切関係のないサービスです。</p>
-                <p class="attention" >※本サイトで使用させていただいたマップの画像は全て<a href="http://balkan3.blog.fc2.com/blog-entry-2.html"  target="_blank">カンZYさんが作成された自作マップ</a>です。</p>
-                <p class="attention" style="margin-bottom:30px;">※本サイトのロゴに使用させていただいたフォント<a href="http://frozenpandaman.github.io/inkling.html" target="_blank">INKLINGは　eli fessler さんが作成されたもの</a>です。<br><br>
+                <div id="attention_box">
+                  <p class="attention">※Wii U及びスプラトゥーンは、任天堂株式会社の商標であり、<br>当サイトは任天堂株式会社とは一切関係のないサービスです。</p>
+                  <p class="attention" >※本サイトで使用させていただいたマップの画像は全て<a href="http://balkan3.blog.fc2.com/blog-entry-2.html"  target="_blank">カンZYさんが作成された自作マップ</a>です。</p>
+                  <p class="attention" style="margin-bottom:30px;">※本サイトのロゴに使用させていただいたフォント<a href="http://frozenpandaman.github.io/inkling.html" target="_blank">INKLINGは　eli fessler さんが作成されたもの</a>です。<br><br>
 
-                	バグ報告は必ず"<a href="/bugs">既知のバグ</a>"ページをご確認後、<br>ご要望は<a href="/update">更新情報・予定</a>をご確認後に<a href="https://twitter.com/squid_map" target="_blank">@squid_map</a>までご連絡ください。</p>
-          <button id="create-new-room">Create a new room</button>
-          <button id="join-room">Join a room</button>
-
+                  	バグ報告は必ず"<a href="/bugs">既知のバグ</a>"ページをご確認後、<br>ご要望は<a href="/update">更新情報・予定</a>をご確認後に<a href="https://twitter.com/squid_map" target="_blank">@squid_map</a>までご連絡ください。</p>
+                </div>
           <div class="frame"><img src="img/top-image.png"></div>
           <div id="dialog-form1" title="Create new room">
             <form method="POST" class="form-inline" action="create_room">
@@ -80,7 +87,6 @@
                 <input type="password" required class="form-control" id="pass" name='pass'><br>
                 <label class="nameLabel" for="name">Your Name:</label>
                 <input type="text" required class="form-control" id="name" name='name'><br>
-
                 <button type="submit" class="btn btn-primary" id="sendButton">Create</button>
               </fieldset>
             </form>
@@ -97,9 +103,6 @@
               <button type="submit">join</button>
             </form>
           </div>
-          <% if(err_message){%>
-          	<p id="err_message"><%= err_message%></p>
-          <%}%>
 </div>
 
     </body>

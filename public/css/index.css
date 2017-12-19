@@ -1,6 +1,7 @@
         html,body {
           padding: 0 0;
           margin: 0 0;
+          width: 100vw;
           height: 100%;
         }
         #header {
@@ -54,12 +55,13 @@
 #main{
   position: relative;
   top: 45px;
-  width: 1220;
+  width: 100vw;
   height: calc(100% -45px );
   margin:0 auto;
-  padding-left: 10px;
+  padding-left: 0px;
 }
-  #main p {
+  #main p,h2 {
+  padding-left: 10px;
   }
   #main .frame {
       position: absolute;
@@ -87,3 +89,91 @@
     	margin: 0;
     	color:red;
     }
+
+    #create-new-room {
+      margin: 20px;
+    }
+
+    #footer {
+      display: none;
+    }
+
+@media screen and (max-width: 480px) {
+        #header {
+          position: fixed;
+          width: 100vw;
+          height: 45px;
+          margin: 0 0;
+          z-index: 99;
+          background-color: rgb(100,200,200);
+        }
+          #header p {
+          cursor: pointer;
+            padding-left:10px;
+            color: white;
+            font-size: 2em;
+            height: 45px;
+            margin: 0;
+          }
+          #header ul {
+            position: static;
+            list-style-type: none;
+            background-color: gray;
+            height: 20px;
+            padding-left: 10px;
+            margin: 0;
+          }
+          #header ul li {
+            box-sizing:border-box;
+            height: 20px;
+            font-size: 10px;
+            padding-top: 5px;
+          }
+
+#main{
+  position: relative;
+  top: 90px;
+  width: 100vw;
+  height: calc(100% -90px );
+  margin:0 auto;
+  padding-left: 10px;
+  box-sizing:border-box;
+}
+  #main p {
+  }
+  #main img {
+    margin: 0 0 0 -10px;
+    width: 100vw;
+  }
+  #main .frame {
+      display: none;
+    }
+      label, input { display:block; }
+    input.text { margin-bottom:12px; width:95%; padding: .4em; }
+    fieldset { padding:0; border:0; margin-top:25px; }
+    p.attention {
+      font-size: 0.5em;
+      padding: 0;
+      margin: 0;
+      color: gray;
+    }
+
+    #create-new-room,#join-room{
+      box-sizing:border-box;
+      width: 35vw;
+      margin-left: 10vw;
+      margin-right: 0vw;
+    }
+
+    #attention_box {
+      padding-top: 10px;
+    }
+
+    #err_message {
+      font-size: 1em;
+      padding: 0;
+      margin: 0;
+      color:red;
+    }
+
+}

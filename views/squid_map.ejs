@@ -4,9 +4,13 @@
         <meta charset="utf-8">
         <title>Squid Map | <%= session.name %> in <%= session.room %>
         </title>
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+         <meta name="viewport" content="width=device-width; initial-scale=1.0" />
         <script src="/socket.io/socket.io.js"></script>
         <script type="text/javascript" src="/js/jquery.min.js"></script>
         <script type="text/javascript" src="/js/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.ui.touch-punch.min.js"></script>
         <script type="text/javascript">
 
                 var socket = io().connect('http://localhost:3000',{
@@ -50,7 +54,7 @@
       	<div id="sidebar">
               <ul>
                   <li><a href="#tabs-1">ツール</a></li>
-                  <li><a href="#tabs-2">ブキ</a></li>
+                  <li><a href="#tabs-2">MAP</a></li>
               </ul>
               <div id="tabs-1">
                       <div class="color" style="background-color:#FFFFFF"></div>
@@ -66,32 +70,51 @@
                       <div class="color" style="background-color:#89C3EB"></div>
                       <div class="color" style="background-color:#706CAA"></div>
                       <hr>
-                      <div class="psize on" data-size="2">S</div>
-                      <div class="psize" data-size="8">M</div>
-                      <div class="psize" data-size="16">L</div>
-                      <hr>
-                      <div id="pen" class="tools on" data-tool="pen"><img src="img/ico/pencil.png" height="20" width="20"></div>
+                      <div id="pen" class="tools on" data-tool="pen"><img src="img/ico/pencil.png" height="20" width="20">
+                        <div id="pen_color"></div>
+                      </div>
                       <div id="eraser" class="tools" data-tool="eraser"><img src="img/ico/eraser.png" height="20" width="20"></div>
-                      <!-- <div id="save" class="tools" style='border:none;' data-tool="save"><a id="save_a" download="a.json"><img src="img/ico/save.png" height="20" width="20"></a></div> -->
+                      <p style="margin:0 0 5px 0;font-size:0.7em;">Size:</p>
+                      <div id="pen_size" class="slider"><span class="sentence"></span></div>
+
+                      <hr>
+                      
+                      <a id="save_a" download="download.png"><div id="save" class="tools" style='border:none;' data-tool="save"><img src="img/ico/save_img.png" height="20" width="20"></div></a>
                       
                       
                       <hr>
-                      <div id="layer_opacity" class="slider"><span id="sentence">opacity</span></div>
+                      <div id="layer_opacity" class="slider"><span class="sentence">opacity</span></div>
                       <br>
                       <table id="layer_list" border="1">
                         <tr id="head">
-                          <th>レイヤー名</th><th></th>
+                          <th>レイヤー名</th><th></th><th></th>
                         </tr>
                         <tr id="layer0" class="layer on" data-layer="0">
-                          <td>Master</td><td class="see" data-view='true'>○</td>
+                          <td><span id="layer_tag0" class="layer_tag">Layer0</span>
+                            <input id="layer_tag0-edit" class="layer_tag_edit" name="layer_tag0" style="display:none;"></input>
+                          </td><td class="see" data-view='true'></td>
+                          <td class="clear_rect"></td>
                         </tr>
-
-
-                        <tr id="addlayer">
-                         <td>新規追加</td><td></td>
+                        <tr id="layer1" class="layer" data-layer="1">
+                          <td><span id="layer_tag1" class="layer_tag">Layer1</span>
+                            <input id="layer_tag1-edit" class="layer_tag_edit" name="layer_tag1" style="display:none;"></input>
+                          </td>
+                          <td class="see" data-view='true'></td>
+                          <td class="clear_rect"></td>
                         </tr>
-                        <tr id="deletelayer">
-                          <td>削除</td><td></td>
+                        <tr id="layer2" class="layer" data-layer="2">
+                          <td><span id="layer_tag2" class="layer_tag">Layer2</span>
+                            <input id="layer_tag2-edit" class="layer_tag_edit" name="layer_tag2" style="display:none;"></input>
+                          </td>
+                          <td class="see" data-view='true'></td>
+                          <td class="clear_rect"></td>
+                        </tr>
+                        <tr id="layer3" class="layer" data-layer="3">
+                          <td><span id="layer_tag3" class="layer_tag">Layer3</span>
+                            <input id="layer_tag3-edit" class="layer_tag_edit" name="layer_tag3" style="display:none;"></input>
+                          </td>
+                          <td class="see" data-view='true'></td>
+                          <td class="clear_rect"></td>
                         </tr>
                       </table>
 
@@ -100,123 +123,28 @@
                       <div id="redo"></div> -->
               </div>
               <div id="tabs-2">
-                  <ul id="weapon_list">
-                        <li class="origin"><img src="img/weapon/spl-bl1.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl2.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl3.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl4.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl5.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl6.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl7.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl8.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl9.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl10.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-bl11.jpg" height="40" width="48"></li>
-
-                        <li class="origin"><img src="img/weapon/spl-ch1.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch2.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch3.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch4.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch5.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch6.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch7.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch8.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch9.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch10.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch11.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch12.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch13.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch14.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch15.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-ch16.jpg" height="40" width="48"></li>
-
-                        <li class="origin"><img src="img/weapon/spl-r1.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r2.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r3.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r4.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r5.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r6.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r7.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r8.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r9.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r10.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r11.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r12.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-r13.jpg" height="40" width="48"></li>
-
-                        <li class="origin"><img src="img/weapon/spl-s1.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s2.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s3.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s30.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s31.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s32.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s4.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s5.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s6.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s7.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s8.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s9.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s10.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s11.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s12.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s13.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s14.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s15.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s16.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s17.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s18.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s19.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s20.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s21.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s22.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s23.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s24.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s25.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s26.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s27.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s28.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-s29.jpg" height="40" width="48"></li>
-
-                        <li class="origin"><img src="img/weapon/spl-sl1.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sl2.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sl3.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sl4.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sl5.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sl6.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sl7.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp1.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp2.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp3.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp4.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp5.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp6.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp7.jpg" height="40" width="48"></li>
-                        <li class="origin"><img src="img/weapon/spl-sp8.jpg" height="40" width="48"></li>
+                  <select  name="rule">
+                    <option value="TurfWar">ナワバリ</option>
+                    <option value="SplatZones">ガチエリア</option>
+                    <option value="TowerControl">ガチヤグラ</option>
+                    <option value="Rainmaker">ガチホコ</option>
+                    <option value="ClamBlitz">ガチアサリ</option>
+                  </select>
+                  <ul id="map_list">
                   </ul>
               </div>
           </div>
-      	<div id="view" data-mapnum="0">
-          <div id="mm"><select id="map_select_menu">
-              <option value="0" selected>ハコフグ倉庫</option>
-              <option value="1">シオノメ油田</option>
-              <option value="2">デカライン高架下</option>
-              <option value="3">Bバスパーク</option>
-              <option value="4">アロワナモール</option>
-              <option value="5">ホッケふ頭</option>
-              <option value="6">モズク農園</option>
-              <option value="7">ネギトロ炭鉱</option>
-              <option value="8">タチウオパーキング</option>
-              <option value="9">モンガラキャンプ場</option>
-              <option value="10">ヒラメが丘団地</option>
-              <option value="11">マサバ海峡大橋</option>
-              <option value="12">キンメダイ美術館</option>
-              <option value="13">マヒマヒリゾート＆スパ(変更前)</option>
-              <option value="14">マヒマヒリゾート＆スパ(変更後)</option>
-              <option value="15">ショッツル鉱山</option>
-              <option value="16">アンチョビットゲームズ</option>
-          </select></div>
-          <canvas id="draw_area0" width="800" height="600"></canvas>
+      	<div id="view" class="a" data-mapnum="0">
+          <canvas id="draw_area-1" width="800" height="600" data-id="-1" style='display:none;'></canvas>
+          <canvas id="draw_area0" class="canvas" width="800" height="600" data-id="0"></canvas>
+          <canvas id="draw_area1" class="canvas" width="800" height="600" data-id="1"></canvas>
+          <canvas id="draw_area2" class="canvas" width="800" height="600" data-id="2"></canvas>
+          <canvas id="draw_area3" class="canvas" width="800" height="600" data-id="3"></canvas>
       	</div>
+      </div>
+      <div id="footer">
+        <input type="radio" name="mode" val="move" id="move_mode"/><label for="move_mode" class="mode_sentence"></label>
+        <input type="radio" name="mode" val="pen" id="pen_mode"/><label for="pen_mode" class="mode_sentence active"></label>
       </div>
     </body>
 </html>

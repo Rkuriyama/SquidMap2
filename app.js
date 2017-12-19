@@ -15,6 +15,7 @@ var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
 
 var rooms = {};
+var no_member_room = [];
 
 
 var app = express();
@@ -182,21 +183,28 @@ io.sockets.on('connection', function(client){
 
 
 	client.on('c2s_join', function(data,fn){
+
+		console.log('connected');
+		if(no_member_room[data.room]) {
+		console.log('clear');
+			clearTimeout(no_member_room[data.room]);
+			delete no_member_room[data.room];
+		};
 		if(!rooms[data.room]){client.to(client.id).emit('room '+data.room+' is undefined');return;}
+		console.log('join');
 		name = data.name;
 		room = data.room;
 		client.join(room);
 
 		rooms[room].member.push(name);
 		io.to(room).emit('s2c_emit',{act:'new_member',name:rooms[room].member});
-			rooms[room].id_list[name] = client.id;
-			console.log(rooms[room].owner.name);
-			if (name == rooms[room].owner.name) {
-				rooms[room].owner.id = client.id;
-			}else{
-				client.to(rooms[room].owner.id).emit('new_member',name);
-			}
-		// console.log(rooms[room].member);
+
+		rooms[room].id_list[name] = client.id;
+		if (name == rooms[room].owner.name) {
+			rooms[room].owner.id = client.id;
+		}else{
+			client.to(rooms[room].owner.id).emit('new_member',name);
+		}
 	});
 
 	client.on('canvas_data',function(value){
@@ -215,19 +223,20 @@ io.sockets.on('connection', function(client){
 			client.to(room).emit('s2c_emit',{act:'disconnect_member',name:name});
 
 			if(rooms[room].member.length === 0){
-				delete rooms[room];
+				no_member_room[room] = setTimeout(function(){
+					delete rooms[room];
+					delete no_member_room[room];
+					console.log(room+' was deleted.');
+				}, 30000);
+				console.log(room+' owner disconnect & add '+room+' into remove list.');
 			} else {
 				if (name == rooms[room].owner.name) {
 					var new_owner = rooms[room].member[0]
 					rooms[room].owner.name = new_owner;
 					rooms[room].owner.id = rooms[room].id_list[new_owner];
 				};
+				console.log(name + ' disconnect from '+room+'acq');
 			}
-			
 		}
-		// console.log('-------------------------');
-		// console.log('disconnected user');
-		// 	console.log(rooms);
-		// console.log('-------------------------');
     });
 });
