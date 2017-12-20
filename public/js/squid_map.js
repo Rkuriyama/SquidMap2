@@ -259,8 +259,11 @@ $(function(){
 
 ///////////////////////////////////////////////////////////////////////////// アイコンドラッグ機能
                 for (var i = 0; i < num_of_magnets; i++) {
-                    var magnet = '<div id="magnet_'+i+'" id="magnet_'+i+'" class="magnet" data-id="'+i+'" style="positiion:relative"><img src="img/weapon/squid_ico_pink.png" class="magnet_image"></div>';
-                    $('#view').append(magnet);
+                    var magnet = '<div id="magnet_'+i+'" id="magnet_'+i+'" class="magnet" data-id="'+i+'" style="positiion:absolute"><img src="img/weapon/squid_ico_pink.png" class="magnet_image"></div>';
+                    $(magnet).appendTo('#view').css({
+                        left:i*24 + 'px',
+                        top:0
+                    });
                 };
 
                 $('.magnet').draggable({containment:'#view',
@@ -413,6 +416,16 @@ $(function(){
                             };
                             break;
 
+                        case 'change_visibility_of_canvas':
+                            if(data.turn){
+                                $('#layer'+data.num+'').find('.see').removeClass('off');
+                                $('#draw_area'+data.num+'').css('visibility','visible');
+                            }else{
+                                $('#layer'+data.num+'').find('.see').addClass('off');
+                                $('#draw_area'+data.num+'').css('visibility','hidden');
+                            }
+                        break;
+
                         case "clear_rect":
                             ctxs[data.num].clearRect(0,0,canvas_size.width,canvas_size.height);
                             break;
@@ -499,11 +512,16 @@ $(function(){
                     var num = $(this).parent('.layer').data('layer');
                     if (!$(this).hasClass('off')) {
                         $(this).addClass('off');
-                        $('#draw_area'+num+'').css('display', 'none');
+                        $('#draw_area'+num+'').css('visibility', 'hidden');
                     }else{
                         $(this).removeClass('off');
-                        $('#draw_area'+num+'').css('display', '');
+                        $('#draw_area'+num+'').css('visibility', 'visible');
                     }
+                    socket.emit('c2s_broadcast',{
+                        act:'change_visibility_of_canvas',
+                        num:num,
+                        turn:!$(this).hasClass('off')
+                    });
                 });
 
                 $('#layer_list').on('click','.clear_rect',function(){
