@@ -48,60 +48,64 @@ $(function(){
                 var canvases = [];
                 var ctxs = [];
 
-                var map_src_list = ['walleye.png','saltspray.png','urchin.png','blackbelly.png','arowana.png','mackerel.png','kelp.png','bluefin.png','moray.png','triggerfish.png','flounder.png','hammerhead.png','alfonsino.png','mahi-mahiA.png','mahi-mahiB.png','piranha.png','ancho-v.png'];
-
-                var map_name_src = [
+                var img_header = '/img/map/';
+                var stages = [
+                    {
+                        name:"バッテラストリート",
+                        eng:"TheReef"
+                    },
+                    // {
+                    //     name:"フジツボスポーツクラブ",
+                    //     eng:"MussleforgeFitness"
+                    // },
                     {
                         name:"ガンガゼ音楽堂",
-                        thumbnail:"/img/thumnail/gangaze.png",
-                        src:"/img/map/gangaze.jpg"
-                    },
-                    {
-                        name:"モズク農園",
-                        thumbnail:"/img/thumnail/mozuku.jpg",
-                        src:"/img/map/mozuku.jpg"
-                    },
-                    {
-                        name:"ホッケ埠頭",
-                        thumbnail:"/img/thumnail/hokke.png",
-                        src:"/img/map/hokke.jpg"
-                    },
-                    {
-                        name:"エンガワ河川敷",
-                        thumbnail:"/img/thumnail/engawa.jpg",
-                        src:"/img/map/engawa.jpg"
-                    },
-                    {
-                        name:"フジツボスポーツクラブ",
-                        thumbnail:"/img/thumnail/hujitsubo.png",
-                        src:"/img/map/hujitsubo.jpg"
-                    },
-                    {
-                        name:"モズク農園",
-                        thumbnail:"/img/thumnail/mozuku.jpg",
-                        src:"/img/map/mozuku.jpg"
-                    },
-                    {
-                        name:"チョウザメ造船所",
-                        thumbnail:"/img/thumnail/chouzame.png",
-                        src:"/img/map/chouzame.jpg"
-                    },
-                    {
-                        name:"海女美術大学",
-                        thumbnail:"/img/thumnail/amabi.png",
-                        src:"/img/map/amabi.jpg"
-                    },
-                    {
-                        name:"タチウオパーキング",
-                        thumbnail:"/img/thumnail/tachiuo.png",
-                        src:"/img/map/tachiuo.jpg"
+                        eng:"StarfishMainstage"
                     },
                     {
                         name:"コンブトラック",
-                        thumbnail:"/img/thumnail/konbu.png",
-                        src:"/img/map/konbu.jpg"
+                        eng:"HumpbackPumpTrack"
                     },
-
+                    // {
+                    //     name:"海女美術大学",
+                    //     eng:"InkblotArtAcademy"
+                    // },
+                    // {
+                    //     name:"チョウザメ造船所",
+                    //     eng:"SturgeonShipyard"
+                    // },
+                    // {
+                    //     name:"タチウオパーキング",
+                    //     eng:"MorayTowers"
+                    // },
+                    // {
+                    //     name:"ホッケ埠頭",
+                    //     eng:"PortMackerel"
+                    // },
+                    // {
+                    //     name:"マンタマリア号",
+                    //     eng:"MantaMaria"
+                    // },
+                    // {
+                    //     name:"モズク農園",
+                    //     eng:"KelpDome"
+                    // },
+                    // {
+                    //     name:"エンガワ河川敷",
+                    //     eng:"SnapperCanal"
+                    // },
+                    // {
+                    //     name:"Bバスパーク",
+                    //     eng:"BlackbellySkatepark"
+                    // },
+                    // {
+                    //     name:"ザトウマーケット",
+                    //     eng:"MakoMart"
+                    // },
+                    // {
+                    //     name:"ハコフグ倉庫",
+                    //     eng:"WalleyeWarehouse"
+                    // }
                 ];
 
                 var $slider = $('#layer_opacity').slider({
@@ -141,6 +145,7 @@ $(function(){
 
                 $('[name="rule"]').change(function(event) {
                     console.log($(this).val());
+                    $('#view').css('background-image', 'url('+img_header+stages[$('#view').data('mapnum')].eng+ '/'+ $(this).val() +'.jpg'+')');
                     socket.emit('c2s_broadcast',{
                         act:'select_rule',
                         rule:$(this).val()
@@ -338,7 +343,7 @@ $(function(){
                                 });
                             });
                             $(map).attr(
-                                "src",map_name_src[$('#view').data('mapnum')].src
+                                "src",img_header+stages[$('#view').data('mapnum')].eng+'/'+ $('[name="rule"]').val() +'.jpg'
                             );
                             break;
                     }
@@ -444,7 +449,7 @@ $(function(){
                             $this = $(".map[data-num='"+num+"']");
                             $(".map").removeClass('active');
                             $this.addClass('active');
-                            $('#view').css('background-image', 'url('+map_name_src[num].src+')').data('mapnum',num);
+                            $('#view').css('background-image', 'url('+img_header+stages[num].eng+'/'+ $('[name="rule"]').val() +'.jpg'+')').data('mapnum',num);
                         break;
 
                         case "change_layer_name":
@@ -455,6 +460,8 @@ $(function(){
                         case "select_rule":
                             console.log(data.rule);
                             $('[name="rule"]').val(data.rule);
+                            $('#view').css('background-image', 'url('+img_header+stages[$('#view').data('mapnum')].eng+'/'+ data.rule +'.jpg'+')').data('mapnum',num);
+
                         break;
                     }
                 });
@@ -592,8 +599,8 @@ $(function(){
                     $this = $(".map[data-num='"+num+"']");
                     $(".map").removeClass('active');
                     $this.addClass('active');
-
-                    $('#view').data('num',num).css('background-image', 'url('+map_name_src[num].src+')').data('mapnum',num);
+                    console.log(img_header+stages[num].eng+'/'+data.rule +'.jpg');
+                    $('#view').data('num',num).css('background-image', 'url('+img_header+stages[num].eng+'/'+data.rule +'.jpg'+')').data('mapnum',num);
                     /////canvasnの同期
                     $.each(data.canvases,function(index, val) {
                         var image = new Image();
@@ -668,22 +675,17 @@ $(function(){
                     }
                 })
 //////////////////////////////////////////////////////////////////////// マップアイコン生成 & マップ変更処理
-                $.each(map_name_src, function(index, val) {
-                    $('<li class="map" data-num="'+index+'"><img src="'+val.thumbnail+'"><div class="map_name">'+val.name+'</div></li>').appendTo('#map_list').click(function(e){
+                $.each(stages, function(index, val) {
+                    $('<li class="map" data-num="'+index+'"><img src="'+img_header+val.eng+ '/thumnail.jpg'+'"><div class="map_name">'+val.name+'</div></li>').appendTo('#map_list').click(function(e){
                         var num = $(this).data('num');
                         $('.map').removeClass('active');
                         $(this).addClass('active');
-                        $('#view').css('background-image', 'url('+val.src+')').data('mapnum',num);
+                        $('#view').css('background-image', 'url('+img_header+val.eng+ '/'+ $('[name="rule"]').val() +'.jpg'+')').data('mapnum',num);
                         socket.emit('c2s_broadcast', {
                             act: 'change_map',
                             num: num
                         });
                     });
                 });
-                $('.map').first().addClass('active');
-
-
-
-
 
 });
