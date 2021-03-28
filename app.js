@@ -28,7 +28,7 @@ var app = express();
 	  resave: false,
 	  saveUninitialized: false
 	}));
-	app.use(basicAuth('squid','1220'));
+	//app.use(basicAuth('squid','1220'));
 	app.use(express.static(path.join(__dirname, 'public')));
 
 	// app.get('/', routes.index);
